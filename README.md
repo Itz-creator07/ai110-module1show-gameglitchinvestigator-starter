@@ -58,4 +58,9 @@ test/test_game_logic.py::test_high_low_direction_not_swapped PASSED      [100%]
 
 ## 🚀 Stretch Features
 
-- [ ] [If you choose to complete Challenge 4, describe the Enhanced UI changes here — a screenshot is optional]
+- [x] **Challenge 4 — Enhanced Game UI:** I added two UI features without changing the core game logic:
+  - **Hot/Cold proximity indicator:** after each guess, the app shows 🔥 Hot! / 🌤️ Warm / ❄️ Cold (or 🎯 Bullseye) based on how close the guess is to the secret. This is powered by a new function `get_proximity_hint(guess, secret)` in `logic_utils.py`, which returns a label from the distance `abs(guess - secret)`. It is displayed in `app.py` with `st.caption("Proximity: ...")` inside the `if submit:` block.
+  - **Session Summary table:** at the bottom of the page, `app.py` renders a `st.table` of every guess this game (Guess + Result), built from a new `st.session_state.rounds` list. Each round is recorded in the `if submit:` block and the list is cleared in the New Game block so the table resets.
+![Enhanced UI: Hot/Cold hint and Session Summary table](Images/images_glitchy_guesser.png)
+
+

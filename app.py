@@ -6,6 +6,7 @@ from logic_utils import (
     parse_guess,
     check_guess,
     update_score,
+    get_proximity_hint,
 )
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
@@ -48,6 +49,10 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+# Challenge 4 (UI): track each round so we can show a session summary table.
+if "rounds" not in st.session_state:
+    st.session_state.rounds = []
+
 st.subheader("Make a guess")
 
 st.info(
@@ -82,6 +87,7 @@ if new_game:      # FIXME: doesn't reset status, so "Game over" never clears
     st.session_state.status = "playing"
     st.session_state.score = 0
     st.session_state.history = []
+    st.session_state.rounds = []
     st.session_state.secret = random.randint(1, 100)
     st.success("New game started.")
     st.rerun()
@@ -120,6 +126,11 @@ if submit:
         if show_hint:
             st.warning(message)
 
+        # Challenge 4 (UI): Hot/Cold proximity + record this round for the summary.
+        if outcome != "Win":
+            st.caption(f"Proximity: {get_proximity_hint(guess_int, secret)}")
+        st.session_state.rounds.append({"Guess": guess_int, "Result": outcome})
+
         st.session_state.score = update_score(
             current_score=st.session_state.score,
             outcome=outcome,
@@ -143,4 +154,10 @@ if submit:
                 )
 
 st.divider()
+
+# Challenge 4 (UI): show a summary table of every guess this session.
+if st.session_state.rounds:
+    st.subheader("📊 Session Summary")
+    st.table(st.session_state.rounds)
+
 st.caption("Built by an AI that claims this code is production-ready.")

@@ -64,3 +64,18 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
         return current_score - 5
 
     return current_score
+
+
+def get_proximity_hint(guess, secret):
+    """
+    Challenge 4 (UI): return a Hot/Warm/Cold label based on how close the
+    guess is to the secret. Pure helper — does NOT change the win/high/low logic.
+    """
+    distance = abs(guess - secret)
+    if distance == 0:
+        return "🎯 Bullseye!"
+    if distance <= 5:
+        return "🔥 Hot!"
+    if distance <= 15:
+        return "🌤️ Warm"
+    return "❄️ Cold"
