@@ -14,3 +14,10 @@ def test_guess_too_low():
     # If secret is 50 and guess is 40, hint should be "Too Low"
     result = check_guess(40, 50)
     assert result == "Too Low"
+
+def test_high_low_direction_not_swapped():
+    # Targets the bug we fixed: high/low direction used to be backwards.
+    # A guess ABOVE the secret must be "Too High" (never "Too Low"),
+    # and a guess BELOW the secret must be "Too Low" (never "Too High").
+    assert check_guess(75, 30) == "Too High"
+    assert check_guess(10, 30) == "Too Low"
